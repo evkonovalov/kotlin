@@ -9,13 +9,16 @@ class ArrayPapyrus<T>() : Papyrus<T>() {
 	override fun iterator(): Iterator<T> {
         class ArrayListIterator<T> : Iterator<T> {
             override fun hasNext(): Boolean {
+                val ret =  (elementNow < size);
                 if(elementNow >= size)
                     elementNow = 0;
-                return (elementNow < size);
+                return ret;
             }
 
             override fun next(): T {
-                return data[elementNow] as T;
+                val ret =  data[elementNow];
+                elementNow++;
+                return ret as T;
             }
         }
         return ArrayListIterator<T>();
