@@ -1,18 +1,21 @@
-class ArrayList<T>() : List<T>() {
+class ArrayPapyrus<T>() : Papyrus<T>() {
     private val data : Array<T>;
-    private var size: Int = 0;
+    private var size = 0;
+    private var elementNow = 0;
 	init {
         data =  Array<Any?>(100, { i -> null }) as Array<T>;
     }
 
-	override fun iterator(): Iterator<T> { //не работает
+	override fun iterator(): Iterator<T> {
         class ArrayListIterator<T> : Iterator<T> {
             override fun hasNext(): Boolean {
-                return !(data.iterator().next() == null)
+                if(elementNow >= size)
+                    elementNow = 0;
+                return (elementNow < size);
             }
 
             override fun next(): T {
-                return data.iterator().next() as T;
+                return data[elementNow] as T;
             }
         }
         return ArrayListIterator<T>();
@@ -38,7 +41,7 @@ class ArrayList<T>() : List<T>() {
         return other?.hashCode() == this.hashCode()
 	}
 
-	override fun compareTo(other: List<T>): Int {
+	override fun compareTo(other: Papyrus<T>): Int {
 		if(equals(other))
             return 0;
         else
