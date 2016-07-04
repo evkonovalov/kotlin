@@ -24,5 +24,5 @@ fun main(args: Array<String>) {
     }
     println(a.equals(b)); */ //Works
 
-    println(a.get(3).toString().plus(" ").plus(b.get(5).toString()));
+    println(a.get(3).toString().plus(" ").plus(b.get(4).toString())); 
 }
