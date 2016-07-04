@@ -1,5 +1,8 @@
 
-class ListPapyrus<T> :Papyrus<T>() {
+
+import Papyrus
+
+class ListPapyrus<T> : Papyrus<T>() {
 
     class ListPapyrusItem<T>(newData: T){
         val data = newData;
@@ -77,7 +80,7 @@ class ListPapyrus<T> :Papyrus<T>() {
 
     override fun get(index: Int): T {
         if (index >= size) {
-            error("ListPapyrus: index more then size")
+            error("main.kotlin.main.kotlin.ListPapyrus: index more then size")
             return null as T;
         }
         else {

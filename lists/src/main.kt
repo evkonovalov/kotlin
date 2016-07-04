@@ -1,3 +1,7 @@
+
+
+import ArrayPapyrus
+import ListPapyrus
 import kotlin.collections.List
 
 fun main(args: Array<String>) {

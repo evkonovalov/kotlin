@@ -1,3 +1,7 @@
+
+
+import Papyrus
+
 class ArrayPapyrus<T>() : Papyrus<T>() {
     private val data : Array<T>;
     private var size = 0;
