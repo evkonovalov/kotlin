@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="VmTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2016-07-05T05:29:30" hostname="HvanMachine" time="0.056">
+<testsuite name="VmTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2016-07-05T17:41:42" hostname="HvanMachine" time="0.053">
   <properties/>
-  <testcase name="helloworld" classname="VmTest" time="0.039"/>
-  <testcase name="factorial" classname="VmTest" time="0.006"/>
-  <testcase name="div" classname="VmTest" time="0.003"/>
-  <testcase name="plus" classname="VmTest" time="0.007"/>
-  <system-out><![CDATA[Hello World!x????????????????????????????????????????????????????????????????????????????????????????]]></system-out>
+  <testcase name="helloworld" classname="VmTest" time="0.027"/>
+  <testcase name="factorial" classname="VmTest" time="0.01"/>
+  <testcase name="simpleReading" classname="VmTest" time="0.004"/>
+  <testcase name="div" classname="VmTest" time="0.001"/>
+  <testcase name="plus" classname="VmTest" time="0.002"/>
+  <testcase name="readerMult" classname="VmTest" time="0.003"/>
+  <system-out><![CDATA[Hello World!
+x|??]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
