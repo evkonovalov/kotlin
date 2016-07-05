@@ -1,6 +1,3 @@
-package main.kotlin
-
-import java.util.*
 import java.io.File
 class Vm {
     private var bytes: ByteArray = ByteArray(30000,{i -> 0});
@@ -63,6 +60,7 @@ class Vm {
             ',' -> { val m = readLine().toString(); bytes[index] = (m.get(0).toByte() - '0'.toByte()).toByte()}
             '[' -> startCycle();
             ']' -> endCycle();
+            13.toChar(),9.toChar(),32.toChar() -> {}
             else -> System.err.println("Invalid Syntax");
         }
     }

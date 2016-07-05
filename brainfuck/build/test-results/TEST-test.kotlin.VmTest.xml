@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="test.kotlin.VmTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2016-07-04T15:26:22" hostname="HvanMachine" time="0.043">
-  <properties/>
-  <testcase name="helloworld" classname="test.kotlin.VmTest" time="0.036"/>
-  <testcase name="div" classname="test.kotlin.VmTest" time="0.006"/>
-  <system-out><![CDATA[Hello World!
-?]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
