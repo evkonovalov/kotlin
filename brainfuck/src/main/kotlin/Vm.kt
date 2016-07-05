@@ -106,8 +106,17 @@ class Vm (private val fileName: String,private val reader : Reader) {
         }
     }
 
-    fun start(){
+    private fun init(){
+        output = CharArray(100,{ i -> 0.toChar()});
+        outputIndex = 0;
+        bytes = ByteArray(30000,{i -> 0});
+        index = 0;
         codeText = File(fileName).readBytes();
+        rIndex = 0;
+    }
+
+    fun start(){
+        init();
         while(rIndex < codeText.size){
             doCommand(codeText[rIndex].toChar());
             rIndex++;
