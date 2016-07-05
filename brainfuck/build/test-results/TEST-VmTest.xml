@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="VmTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2016-07-05T01:42:37" hostname="HvanMachine" time="0.042">
+<testsuite name="VmTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2016-07-05T05:29:30" hostname="HvanMachine" time="0.056">
   <properties/>
-  <testcase name="helloworld" classname="VmTest" time="0.036"/>
-  <testcase name="div" classname="VmTest" time="0.005"/>
-  <system-out><![CDATA[Hello World!
-?]]></system-out>
+  <testcase name="helloworld" classname="VmTest" time="0.039"/>
+  <testcase name="factorial" classname="VmTest" time="0.006"/>
+  <testcase name="div" classname="VmTest" time="0.003"/>
+  <testcase name="plus" classname="VmTest" time="0.007"/>
+  <system-out><![CDATA[Hello World!x????????????????????????????????????????????????????????????????????????????????????????]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
