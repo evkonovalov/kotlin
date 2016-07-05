@@ -53,14 +53,12 @@ class Vm {
             '<' -> indDec();
             '+' -> bytes[index]++;
             '-' -> bytes[index]--;
-            '.' -> { print(bytes[index].toChar());
-                File("output.txt").appendText(bytes[index].toChar().toString());
-                str[charIndex] = bytes[index].toChar();
+            '.' -> { str[charIndex] = bytes[index].toChar();
                 charIndex++}
             ',' -> { val m = readLine().toString(); bytes[index] = (m.get(0).toByte() - '0'.toByte()).toByte()}
             '[' -> startCycle();
             ']' -> endCycle();
-            13.toChar(),9.toChar(),32.toChar() -> {}
+            13.toChar(),9.toChar(),32.toChar() -> {} //Ignore spaces, tabs and enters
             else -> System.err.println("Invalid Syntax");
         }
     }
@@ -70,7 +68,8 @@ class Vm {
             doCommand(reader[rIndex].toChar());
             rIndex++;
         }
-        if(charIndex > 1)
+        if(charIndex > 1) //Crunch
             str = str.copyOfRange(0,charIndex-1);
+        print(str);
     }
 }
