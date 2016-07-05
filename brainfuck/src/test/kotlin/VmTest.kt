@@ -11,12 +11,12 @@ class VmTest {
     val fileWriter = FileWriter(file,false);
     var testReader = StringReader("");
 
-    @Test fun helloworld(){ //Writes Hello World!
+    @Test fun helloworld(){ //Writes Hello World!\n
         var vm = Vm("inputTest.txt", testReader);
         fileWriter.write("++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.");
         fileWriter.close();
         vm.start();
-        assertEquals("Hello World!\n", String(vm.str));
+        assertEquals("Hello World!\n", String(vm.output));
     }
 
     @Test fun div(){ //Divides six on two
@@ -24,7 +24,7 @@ class VmTest {
         fileWriter.write("+>+++++++>++<[<+>>[<<->>->+>]>[<<+>>[<+>-]]<<<<[<]>>-]<-.");
         fileWriter.close();
         vm.start();
-        assertEquals(3.toByte().toChar(), vm.str[0]);
+        assertEquals(3.toByte().toChar(), vm.output[0]);
     }
 
     @Test fun plus(){ //Sum 11 and 2
@@ -32,7 +32,7 @@ class VmTest {
         fileWriter.write("+++++++++++>++[<+>-]<.");
         fileWriter.close();
         vm.start();
-        assertEquals(13.toByte().toChar(), vm.str[0]);
+        assertEquals(13.toByte().toChar(), vm.output[0]);
     }
 
     @Test fun factorial(){ //5!
@@ -40,7 +40,7 @@ class VmTest {
         fileWriter.write("+++++>>>>+<<<<[->+[->+>+<<]>[-<+>]>[->[->+>+<<]>[-<+>]<<]>[-]>>[-<<+>>]<<<<<<]>>>>.");
         fileWriter.close();
         vm.start();
-        assertEquals(120.toByte().toChar(), vm.str[0]);
+        assertEquals(120.toByte().toChar(), vm.output[0]);
     }
 
     @Test fun simpleReading(){ //Reads number, prints char
@@ -49,7 +49,7 @@ class VmTest {
         fileWriter.write(",.");
         fileWriter.close();
         vm.start();
-        assertEquals(124.toByte().toChar(), vm.str[0]);
+        assertEquals(124.toByte().toChar(), vm.output[0]);
     }
 
     @Test fun readerMult(){ //Reads two numbers and multiply them
@@ -58,6 +58,6 @@ class VmTest {
         fileWriter.write(",>,<[>[>+>+<<-]>[<+>-]<<-]>>>.");
         fileWriter.close();
         vm.start();
-        assertEquals((12*32).toByte().toChar(), vm.str[0]);
+        assertEquals((12*32).toByte().toChar(), vm.output[0]);
     }
 }

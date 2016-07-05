@@ -1,29 +1,32 @@
 import java.io.File
 import java.io.Reader
 //Vm like VirtualMachine. Too pretentious
-class Vm (private val fileName: String,val reader : Reader) {
+class Vm (private val fileName: String,private val reader : Reader) {
+
     private var bytes = ByteArray(30000,{i -> 0}); //Vm space
     private var index = 0; //index of chosen Byte
-    private var rIndex = 0; //index of command in Reader
-    private var code = File(fileName).readBytes(); //Text of program
-    var str = CharArray(100,{i -> 0.toChar()}); // Output
-    var charIndex = 0; //Output Index
 
-    fun indInc(){
+    private var codeText = File(fileName).readBytes(); //Text of program
+    private var rIndex = 0; //index of command in codeText
+
+    var output = CharArray(100,{ i -> 0.toChar()}); // Output
+    private var outputIndex = 0; //Output Index
+
+    private fun indInc(){
         if (index + 1 >= 30000)
             index = 0;
         else
             index++;
     }
 
-    fun indDec(){
+    private fun indDec(){
         if (index - 1 < 0)
             index = 29999;
         else
             index--;
     }
 
-    fun startCycle(){
+    private fun startCycle(){
         if(bytes[index] == 0.toByte()) {
             var brackets = 1;
 
@@ -31,12 +34,12 @@ class Vm (private val fileName: String,val reader : Reader) {
 
                 rIndex++;
 
-                if(code[rIndex].toChar() == '[')
+                if(codeText[rIndex].toChar() == '[')
                     brackets++
-                else if(code[rIndex].toChar() == ']')
+                else if(codeText[rIndex].toChar() == ']')
                     brackets--;
 
-                if(rIndex == code.size) {
+                if(rIndex == codeText.size) {
                     System.err.println("Invalid Loop");
                     return;
                 }
@@ -46,19 +49,19 @@ class Vm (private val fileName: String,val reader : Reader) {
         }
     }
 
-    fun endCycle(){
+    private fun endCycle(){
         if(bytes[index] != 0.toByte()) {
             var brackets = 1;
 
             while(brackets != 0){
                 rIndex--;
 
-                if(code[rIndex].toChar() == '[')
+                if(codeText[rIndex].toChar() == '[')
                     brackets--;
-                else if(code[rIndex].toChar() == ']')
+                else if(codeText[rIndex].toChar() == ']')
                     brackets++;
 
-                if(rIndex == code.size) {
+                if(rIndex == codeText.size) {
                     System.err.println("Invalid Loop");
                     return;
                 }
@@ -67,7 +70,7 @@ class Vm (private val fileName: String,val reader : Reader) {
         }
     }
 
-    fun read(){
+    private fun readNumber(){
         val buff = CharArray(4,{i -> 0.toChar()});
         var buffChar = reader.read();
         var endOfBuff = 0;
@@ -80,22 +83,22 @@ class Vm (private val fileName: String,val reader : Reader) {
 
         if(endOfBuff == 0 || endOfBuff == 4) {
             System.err.println("Invalid Input");
-            rIndex = code.size;
+            rIndex = codeText.size;
             return;
         }
         val m = Integer.parseInt(String(buff.copyOfRange(0,endOfBuff)));
         bytes[index] = m.toByte();
     }
 
-    fun doCommand(c: Char) {
+    private fun doCommand(c: Char) {
 
         when(c) {
             '>' -> indInc();
             '<' -> indDec();
             '+' -> bytes[index]++;
             '-' -> bytes[index]--;
-            '.' -> { str[charIndex] = bytes[index].toChar(); charIndex++}
-            ',' -> read();
+            '.' -> {output[outputIndex] = bytes[index].toChar(); outputIndex++}
+            ',' -> readNumber();
             '[' -> startCycle();
             ']' -> endCycle();
             13.toChar(),9.toChar(),32.toChar() -> {} //Ignore spaces, tabs and enters
@@ -104,13 +107,12 @@ class Vm (private val fileName: String,val reader : Reader) {
     }
 
     fun start(){
-        code = File(fileName).readBytes();
-        while(rIndex < code.size){
-            doCommand(code[rIndex].toChar());
+        codeText = File(fileName).readBytes();
+        while(rIndex < codeText.size){
+            doCommand(codeText[rIndex].toChar());
             rIndex++;
         }
-
-        str = str.copyOfRange(0,charIndex);
-        print(str);
+        output = output.copyOfRange(0, outputIndex);
+        print(output);
     }
 }
