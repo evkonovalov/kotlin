@@ -1,11 +1,11 @@
 import java.io.File
-class Vm {
-    private var bytes: ByteArray = ByteArray(30000,{i -> 0});
-    private var index = 0;
-    private var rIndex = 0;
-    var reader = File("input.txt").readBytes();
-    var str = CharArray(30);
-    var charIndex = 0;
+class Vm { //Vm like VirtualMachine. Too pretentious
+    private var bytes: ByteArray = ByteArray(30000,{i -> 0}); //Vm space
+    private var index = 0; //index of chosen Byte
+    private var rIndex = 0; //index of command in Reader
+    var reader = File("input.txt").readBytes(); //Text of program
+    var str = CharArray(100); // Output
+    var charIndex = 0; //Output Index
 
     fun indInc(){
         if (index + 1 >= 30000)
@@ -24,25 +24,43 @@ class Vm {
     fun startCycle(){
         if(bytes[index] == 0.toByte()) {
             var brackets = 1;
+
             while(brackets != 0){
+
                 rIndex++;
+
                 if(reader[rIndex].toChar() == '[')
                     brackets++
                 else if(reader[rIndex].toChar() == ']')
                     brackets--;
+
+                if(rIndex == reader.size) {
+                    System.err.println("Invalid Loop");
+                    return;
+                }
+
             }
+
         }
     }
 
     fun endCycle(){
         if(bytes[index] != 0.toByte()) {
             var brackets = 1;
+
             while(brackets != 0){
                 rIndex--;
+
                 if(reader[rIndex].toChar() == '[')
                     brackets--;
                 else if(reader[rIndex].toChar() == ']')
                     brackets++;
+
+                if(rIndex == reader.size) {
+                    System.err.println("Invalid Loop");
+                    return;
+                }
+
             }
         }
     }
@@ -53,8 +71,7 @@ class Vm {
             '<' -> indDec();
             '+' -> bytes[index]++;
             '-' -> bytes[index]--;
-            '.' -> { str[charIndex] = bytes[index].toChar();
-                charIndex++}
+            '.' -> { str[charIndex] = bytes[index].toChar(); charIndex++}
             ',' -> { val m = readLine().toString(); bytes[index] = (m.get(0).toByte() - '0'.toByte()).toByte()}
             '[' -> startCycle();
             ']' -> endCycle();
@@ -68,6 +85,7 @@ class Vm {
             doCommand(reader[rIndex].toChar());
             rIndex++;
         }
+
         if(charIndex > 1) //Crunch
             str = str.copyOfRange(0,charIndex-1);
         print(str);
