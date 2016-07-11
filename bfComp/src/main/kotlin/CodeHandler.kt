@@ -10,19 +10,21 @@ class CodeHandler(val fileName: String) {
     private var exitCode = 0;
 
 
-    fun handleShift(){
+    fun handleShift(){ //Reads all '>' and '<' and creates Command
         var value = 0;
-        while((source[index].toChar() == '>' || source[index].toChar() == '<') && index < source.size) {
+        while((source[index].toChar() == '>' || source[index].toChar() == '<')) {
             if (source[index].toChar() == '>')
                 value++;
             else
                 value--;
             index++;
+            if(index >= source.size)
+                break;
         }
         commands.add(Command(CommandType.SHIFT,value));
     }
 
-    fun handleSum(){
+    fun handleSum(){ //Reads all '+' and '-' and creates Command
         var value = 0;
 
         while((source[index].toChar() == '+' || source[index].toChar() == '-')) {

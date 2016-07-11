@@ -10,7 +10,7 @@ class CommandCompiler {
     private var labels = Stack<Label>();
 
     private fun zeroCompile(mv: MethodVisitor){
-
+        //a[index] = 0
         mv.visitVarInsn(ALOAD,1);
         mv.visitVarInsn(ILOAD,2);
         mv.visitIntInsn(BIPUSH,0);
@@ -20,13 +20,14 @@ class CommandCompiler {
 
     private fun shiftCompile(mv: MethodVisitor, value: Int){ //Makes Array cyclical
 
+        //index+=value
         mv.visitVarInsn(ILOAD,2);
         mv.visitIntInsn(BIPUSH,value);
         mv.visitInsn(IADD);
         mv.visitInsn(DUP);
         val l = Label();
         val l2 = Label();
-
+        // if(index < 0) index+=30000;
         mv.visitJumpInsn(IFGE,l);
         mv.visitIntInsn(SIPUSH,30000);
         mv.visitInsn(IADD);
@@ -34,6 +35,7 @@ class CommandCompiler {
         mv.visitLabel(l)
         mv.visitFrame(F_FULL, 4, arrayOf("[Ljava/lang/String;","[C", INTEGER,"java/util/Scanner"), 1, arrayOf(INTEGER));
 
+        //if(index>=30000) index -= 30000
         mv.visitIntInsn(SIPUSH,-30000);
         mv.visitInsn(IADD);
         mv.visitInsn(DUP);
@@ -50,6 +52,7 @@ class CommandCompiler {
 
     private fun sumCompile(mv: MethodVisitor, value: Int){
 
+        //a[index] += value
         mv.visitVarInsn(ALOAD,1);
         mv.visitVarInsn(ILOAD,2);
         mv.visitInsn(DUP2);
@@ -62,8 +65,8 @@ class CommandCompiler {
 
     private fun startLoopCompile(mv: MethodVisitor) {
 
-        val ls = Label();
-        val lf = Label();
+        val ls = Label(); //Start
+        val lf = Label(); //Finish
         labels.push(lf);
         labels.push(ls);
         mv.visitLabel(ls);
@@ -109,36 +112,32 @@ class CommandCompiler {
     fun compile(className: String){
 
         val ch = CodeHandler(className + ".txt");
-        ch.start();
-        val commands = ch.commands;
+        if(ch.start() != 0)
+            return;
+        val commands = ch.commands; //Get commands from ClassName.txt
         val cw = ClassWriter(0);
-        cw.visit(V1_7,ACC_PUBLIC + ACC_SUPER,className,null,"java/lang/Object",null);
-        var mv = cw.visitMethod(ACC_PUBLIC,"<init>","()V",null,null);
+        cw.visit(V1_7,ACC_PUBLIC,className,null,"java/lang/Object",null);
+        val mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC,"main","([Ljava/lang/String;)V",null,null);
+
         mv.visitCode();
-        mv.visitVarInsn(ALOAD,0);
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
-        mv.visitInsn(RETURN);
-        mv.visitMaxs(1, 1);
-        mv.visitEnd();
-        mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC,"main","([Ljava/lang/String;)V",null,null);
-        mv.visitCode();
+        //Creates char[30000]
         mv.visitIntInsn(SIPUSH,30000);
         mv.visitIntInsn(NEWARRAY,T_CHAR);
         mv.visitVarInsn(ASTORE,1);
-
+        //Creates index
         mv.visitInsn(ICONST_0);
         mv.visitVarInsn(ISTORE,2);
-
+        //Creates Scanner
         mv.visitTypeInsn(NEW,"java/util/Scanner");
         mv.visitInsn(DUP);
         mv.visitFieldInsn(GETSTATIC, "java/lang/System","in","Ljava/io/InputStream;");
         mv.visitMethodInsn(INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V", false);
         mv.visitVarInsn(ASTORE,3);
 
-        for(i in 0..(commands.size-1)) {
-            when(commands[i].type){
-                CommandType.SUM -> sumCompile(mv,commands[i].value);
-                CommandType.SHIFT -> shiftCompile(mv,commands[i].value);
+        for(cmd in commands) {
+            when(cmd.type){
+                CommandType.SUM -> sumCompile(mv,cmd.value);
+                CommandType.SHIFT -> shiftCompile(mv,cmd.value);
                 CommandType.ZERO -> zeroCompile(mv);
                 CommandType.START -> startLoopCompile(mv);
                 CommandType.FINISH -> finishLoopCompile(mv);
